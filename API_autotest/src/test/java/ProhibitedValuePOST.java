@@ -1,0 +1,148 @@
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+
+import java.io.IOException;
+
+public class ProhibitedValuePOST {
+
+    @Test
+    @DisplayName("Create user with valid email, pass and SQL-injection in name")
+    public void sqlInjection() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile100@mail.ru\",\n" +
+                "    \"name\": \"DROP TABLE users\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile100@mail.ru";
+        String name = "DROP TABLE users";
+
+        Assert.assertTrue("Checking new user with SQL-injection", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    @Test
+    @DisplayName("Create user with valid email, pass and XSS-injection in name")
+    public void xssInjection() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile101@mail.ru\",\n" +
+                "    \"name\": \"</script><script>alert()</script>\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile101@mail.ru";
+        String name = "alert()";
+
+        Assert.assertTrue("Checking new user with XSS-injection", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    @Test
+    @DisplayName("Create user with valid email, pass and HTML tag in name")
+    public void htmlTag() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile102@mail.ru\",\n" +
+                "    \"name\": \"<h1>alert</h1>\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile102@mail.ru";
+        String name = "alert";
+
+        Assert.assertTrue("Checking new user with HTML tag", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    @Test
+    @DisplayName("Create user with valid email, pass and NULL in name")
+    public void nullInName() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile103@mail.ru\",\n" +
+                "    \"name\": \"NULL\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile103@mail.ru";
+        String name = "NULL";
+
+        Assert.assertTrue("Checking new user with value NULL", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    @Test
+    @DisplayName("Create user with valid email, pass and UNDEFINED in name")
+    public void undefinedInName() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile104@mail.ru\",\n" +
+                "    \"name\": \"UNDEFINED\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile104@mail.ru";
+        String name = "UNDEFINED";
+
+        Assert.assertTrue("Checking new user with value UNDEFINED", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    @Test
+    @DisplayName("Create user with valid email, pass and non-ASCII symbol in name")
+    public void nonASCIIinName() throws IOException {
+        String postParam = "{\n" +
+                "    \"email\": \"smile105@mail.ru\",\n" +
+                "    \"name\": \"♣\",\n" +
+                "    \"password\": \"123\"\n" +
+                "}";
+        String email = "smile105@mail.ru";
+        String name = "♣";
+
+        Assert.assertTrue("Checking new user with non-ASCII symbol", TestMethods.testPOSTValidUsr(postParam, email, name));
+    }
+
+    //Delete users for future tests
+    @AfterClass
+    @DisplayName("Delete user with SQL-injection")
+    public static void deleteSQLinjection() throws IOException {
+        String email = "smile100@mail.ru";
+        Assert.assertTrue("Checking deleted user with SQL-injection", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    @DisplayName("Delete user with XSS-injection")
+    public static void deleteXSSinjection() throws IOException {
+        String email = "smile101@mail.ru";
+        Assert.assertTrue("Checking deleted user with XSS-injection", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    @DisplayName("Delete user with HTML tag")
+    public static void deleteHTMLtag() throws IOException {
+        String email = "smile102@mail.ru";
+        Assert.assertTrue("Checking deleted user with HTML tag", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    @DisplayName("Delete user with value NULL")
+    public static void deleteNull() throws IOException {
+        String email = "smile103@mail.ru";
+        Assert.assertTrue("Checking deleted user with value NULL", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    @DisplayName("Delete user with value UNDEFINED")
+    public static void deleteUndefined() throws IOException {
+        String email = "smile104@mail.ru";
+        Assert.assertTrue("Checking deleted user with value UNDEFINED", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    @DisplayName("Delete user with non-ASCII symbol")
+    public static void deleteNonASCII() throws IOException {
+        String email = "smile105@mail.ru";
+        Assert.assertTrue("Checking deleted user with non-ASCII symbol", TestMethods.testDELValidUser(email));
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        try {
+            HttpClient.close(httpClient);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
