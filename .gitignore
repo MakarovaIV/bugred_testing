@@ -24,3 +24,5 @@ hs_err_pid*
 
 /.idea
 /bugred_testing.iml
+/API_autotest/target
+/simple_UI_test/target
