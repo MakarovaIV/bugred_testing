@@ -7,27 +7,33 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit;
 
-public class TestUser {
-    public static MainPage mainPage;
+public class FindExistingUserTest {
+    public static UserListPage userListPage;
     public static WebDriver driver;
 
     @BeforeClass
     public static void setup(){
         System.setProperty("webdriver.chrome.driver", ConfigProperties.getProperty("chromedriver"));
         driver = new ChromeDriver();
-        mainPage = new MainPage(driver);
+        userListPage = new UserListPage(driver);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get(ConfigProperties.getProperty("mainPage"));
+        driver.get(ConfigProperties.getProperty("URL"));
     }
 
     @Test
-    public void mainTest() {
-        mainPage.clickUserBtn();
-        String email = mainPage.getUserEmail();
-        Assert.assertEquals(ConfigProperties.getProperty("namePOST"), email);
-        String name = mainPage.getUserName();
-        Assert.assertEquals(ConfigProperties.getProperty("emailPOST"), name);
+    public void checkUserInTable() {
+        userListPage.clickBtnUser();
+        userListPage.findNecessaryUser(ConfigProperties.getProperty("userKey"));
+        userListPage.clickBtnFindUser();
+
+        Assert.assertTrue(
+                userListPage.findUserByNameAndMail(
+                        ConfigProperties.getProperty("emailPOST"),
+                        ConfigProperties.getProperty("namePOST")
+                )
+        );
+
     }
 
     @AfterClass
