@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import utils.TestMethods;
 
 import java.io.IOException;
 
@@ -13,10 +14,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and SQL-injection in name")
     public void sqlInjection() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile100@mail.ru\",\n" +
-                "    \"name\": \"DROP TABLE users\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile100@mail.ru\",\n" +
+            "    \"name\": \"DROP TABLE users\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile100@mail.ru";
         String name = "DROP TABLE users";
 
@@ -27,10 +28,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and XSS-injection in name")
     public void xssInjection() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile101@mail.ru\",\n" +
-                "    \"name\": \"</script><script>alert()</script>\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile101@mail.ru\",\n" +
+            "    \"name\": \"</script><script>alert()</script>\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile101@mail.ru";
         String name = "alert()";
 
@@ -41,10 +42,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and HTML tag in name")
     public void htmlTag() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile102@mail.ru\",\n" +
-                "    \"name\": \"<h1>alert</h1>\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile102@mail.ru\",\n" +
+            "    \"name\": \"<h1>alert</h1>\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile102@mail.ru";
         String name = "alert";
 
@@ -55,10 +56,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and NULL in name")
     public void nullInName() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile103@mail.ru\",\n" +
-                "    \"name\": \"NULL\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile103@mail.ru\",\n" +
+            "    \"name\": \"NULL\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile103@mail.ru";
         String name = "NULL";
 
@@ -69,10 +70,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and UNDEFINED in name")
     public void undefinedInName() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile104@mail.ru\",\n" +
-                "    \"name\": \"UNDEFINED\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile104@mail.ru\",\n" +
+            "    \"name\": \"UNDEFINED\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile104@mail.ru";
         String name = "UNDEFINED";
 
@@ -83,10 +84,10 @@ public class ProhibitedValuePOST {
     @DisplayName("Create user with valid email, pass and non-ASCII symbol in name")
     public void nonASCIIinName() throws IOException {
         String postParam = "{\n" +
-                "    \"email\": \"smile105@mail.ru\",\n" +
-                "    \"name\": \"♣\",\n" +
-                "    \"password\": \"123\"\n" +
-                "}";
+            "    \"email\": \"smile105@mail.ru\",\n" +
+            "    \"name\": \"♣\",\n" +
+            "    \"password\": \"123\"\n" +
+            "}";
         String email = "smile105@mail.ru";
         String name = "♣";
 
@@ -95,54 +96,24 @@ public class ProhibitedValuePOST {
 
     //Delete users for future tests
     @AfterClass
-    @DisplayName("Delete user with SQL-injection")
-    public static void deleteSQLinjection() throws IOException {
-        String email = "smile100@mail.ru";
-        Assert.assertTrue("Checking deleted user with SQL-injection", TestMethods.testDELValidUser(email));
-    }
+    @DisplayName("Delete users after tests")
+    public static void deleteUsersAfterTests() throws IOException {
+        String email100 = "smile100@mail.ru";
+        TestMethods.testDELValidUser(email100);
 
-    @AfterClass
-    @DisplayName("Delete user with XSS-injection")
-    public static void deleteXSSinjection() throws IOException {
-        String email = "smile101@mail.ru";
-        Assert.assertTrue("Checking deleted user with XSS-injection", TestMethods.testDELValidUser(email));
-    }
+        String email101 = "smile101@mail.ru";
+        TestMethods.testDELValidUser(email101);
 
-    @AfterClass
-    @DisplayName("Delete user with HTML tag")
-    public static void deleteHTMLtag() throws IOException {
-        String email = "smile102@mail.ru";
-        Assert.assertTrue("Checking deleted user with HTML tag", TestMethods.testDELValidUser(email));
-    }
+        String email102 = "smile102@mail.ru";
+        TestMethods.testDELValidUser(email102);
 
-    @AfterClass
-    @DisplayName("Delete user with value NULL")
-    public static void deleteNull() throws IOException {
-        String email = "smile103@mail.ru";
-        Assert.assertTrue("Checking deleted user with value NULL", TestMethods.testDELValidUser(email));
-    }
+        String email103 = "smile103@mail.ru";
+        TestMethods.testDELValidUser(email103);
 
-    @AfterClass
-    @DisplayName("Delete user with value UNDEFINED")
-    public static void deleteUndefined() throws IOException {
-        String email = "smile104@mail.ru";
-        Assert.assertTrue("Checking deleted user with value UNDEFINED", TestMethods.testDELValidUser(email));
-    }
+        String email104 = "smile104@mail.ru";
+        TestMethods.testDELValidUser(email104);
 
-    @AfterClass
-    @DisplayName("Delete user with non-ASCII symbol")
-    public static void deleteNonASCII() throws IOException {
-        String email = "smile105@mail.ru";
-        Assert.assertTrue("Checking deleted user with non-ASCII symbol", TestMethods.testDELValidUser(email));
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        try {
-            HttpClient.close(httpClient);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String email105 = "smile105@mail.ru";
+        TestMethods.testDELValidUser(email105);
     }
 }
