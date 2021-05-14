@@ -1,5 +1,9 @@
 # Bugred API testing 
 ## Project description
+This is a project with autotests for a site
+[bugred](http://users.bugred.ru)
+with an open API.
+
 The project consists of two modules:
  * API_autotest - testing API part;
  * simple_UI_test - testing UI part.
@@ -44,7 +48,7 @@ You will see similar information in terminal.
 Bugs are described in the bug report.
 
 ## Artifacts
-Artifacts were made after manual testing website [bugred](http://users.bugred.ru)
+Artifacts were made after manual testing [bugred](http://users.bugred.ru)
 in Postman.
 
 Checklist, test-cases and bug report [here](https://docs.google.com/spreadsheets/d/1rUdgbhy0x3Z7cwj6roaaOKP2CQn0fGcf2NMzpR5g8Hg/edit?usp=sharing).
