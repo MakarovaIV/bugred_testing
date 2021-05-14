@@ -7,6 +7,8 @@ The project consists of two modules:
 ## Build and run
 
 ### Prepare environment
+Open a terminal from where the project will be placed.
+
 ```
 //make git clone
 git clone https://github.com/MakarovaIV/bugred_testing.git
@@ -18,8 +20,6 @@ use the official website for [downloading](https://maven.apache.org/download.cgi
 and [installation](https://maven.apache.org/install.html).
 
 ### API_autotest
-Open a terminal from where the project will be placed.
-
 ```
 //change directory to module API_autotest
 cd bugred_testing/API_autotest
